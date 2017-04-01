@@ -1,0 +1,7 @@
+
+//
+//1.get code
+//2.get openID
+//3.emit 
+
+require('http')

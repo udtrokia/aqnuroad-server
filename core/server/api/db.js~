@@ -1,0 +1,112 @@
+'use strict'
+//let MongoClient = require('mongodb').MongoClient;
+//let DB_CONN_STR = 'mongodb://localhost:27017/aqnuroad';//use db aqnuroad
+
+// insert
+let dbApi = {
+
+    insertData : (db, table, data, callback)=>{
+        //link table
+        let collection = db.collection(table);
+        //insert
+        collection.insert(data, (err, result)=>{
+    	if(err){
+    	    console.log('Error:'+err);
+    	    return
+    	}
+    	callback(result);
+        });
+    },
+    select :{
+	// select
+	serlect : (db, table, whereStr, callback)=>{
+	    //link table
+	    let collection = db.collection(table);
+	    //select
+
+	    collection.find(whereStr).toArray((err,result)=>{
+		if(err){
+		    console.log('Error: '+err);
+		    return;
+		}
+		callback(result);
+		db.close;
+	    })
+	},
+	
+	refresh : (db, table, whereStr, page, callback)=>{
+            //link table
+            let collection = db.collection(table);
+            //select
+	    
+            collection.find(whereStr).limit(5*page).toArray((err,result)=>{
+    		if(err){
+    		    console.log('Error: '+err);
+    		    return;
+    		}
+    		callback(result);
+    		db.close;
+            })
+	},
+	loadmore : (db, table, whereStr, page, callback)=>{
+	    //link table
+	    let collection = db.collection(table);
+	    page += page;
+	    //select
+	    collection.find(WhereStr).limit(5).skip(page).toArray((err, result)=>{
+		if(err){
+		    console.log('Error:'+err);
+		    return;
+		}
+		callback(result);
+		db.close;
+	    })
+	}
+    },
+    // update
+    
+    updataData : (db, table, whereStr, updateStr, callback)=>{
+        //link table
+        let collection = db.collection(table);
+        //update data
+        collection.update(whereStr, updateStr, (err, result)=>{
+    	if(err){
+    	    console.log('Error:'+err);
+    	    return result;
+    	}
+    	callback(result);
+        });
+    },
+    
+    // delete
+    
+    delData : (db, table, whereStr, callback)=>{
+        //link to table
+        let collection = db.collection(table);
+        //delete
+        collection.remove(whereStr, (err,result)=>{
+    	if(err){
+    	    console.log('Error:'+err);
+    	    return;
+    	}
+    	console.log(result);
+        })
+    }
+}
+
+//exports
+
+module.exports = dbApi;
+
+
+
+//MongoClient.connect(DB_CONN_STR, (err, db)=>{
+//    console.log('connect success!');
+//    delData(db, (result)=>{
+//	console.log(result)
+//	db.close();
+//    })
+//})
+
+
+

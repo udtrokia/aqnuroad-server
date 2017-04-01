@@ -1,0 +1,6 @@
+
+'use strict'
+
+let request = require('request');
+
+request.post('http://localhost:8888', {form:{key:'valuee'}})

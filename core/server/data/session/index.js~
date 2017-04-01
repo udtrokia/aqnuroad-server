@@ -1,0 +1,93 @@
+/**
+  *
+*@params?req&res
+*@func?makeRandom&retSession
+*@get code@client, change code to openid&session_key@wxServer, res mySession to client;
+*@exports=retSession@JSON
+*
+**/
+
+'use strict'
+
+let http = require('http');
+let redisClient = require('redis').createClient();
+let session;
+
+//#main func#
+let checkSession = (req, res)=>{
+    
+    req.query.session?expireSession(req,res):retSession(req,res);
+}
+
+//##
+
+let retSession  = (req,res)=>{
+    
+    let APPID   = 'wx3f9ecab6d0b8ea53';
+    let SECRET  = 'f26a32a4c9bdebbac4476c33c77392f3';
+    let JSCODE  = req.query.data.code;
+
+    
+    http.get("https://api.weixin.qq.com/sns/jscode2session?appid="+APPID+"&secret="+SECRET+"&js_code="+JSCODE+"&grant_type=authorization_code",(res)=>{
+
+	let parseRes = (res,callback)=>{
+	    res.setEncoding('utf8');
+	    let rawData = '';
+	    res.on('data', (chunk) => rawData += chunk);
+	    res.on('end', () => {
+		try {
+		    let parsedData = JSON.parse(rawData);
+		    console.log(parsedData);
+		} catch (e) {
+		    console.log(e.message);
+		}
+	    });
+	    callback(parseData)
+	}
+
+	let makeSession = () =>{
+	    let chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
+	    let random = '';
+	    for(let i=0; i<16; i++){
+		let rnum = Math.floor(Math.random()*chars.length);
+		random += chars.substring(rnum,rnum+1);	    
+	    }
+	    return random;
+	}
+	
+	
+	parseRes(res, (parseData)=>{
+  	    if(parseData.openid&&parseData.session_key){
+  		let mySession = makeSession();
+		redisClient.set(mySession,parseData.openid+parseData.session_key);
+   		console.log('insert success')
+  		session = {
+  		    'SESSID' : mySession,
+  		}
+  		res.json(session);
+  	    }else{
+  		return('err');
+  	    }
+	})
+    })
+}
+
+
+let expireSession = (req, res)=>{
+    let reqSession = req.query.session;
+    redisClient.get(reqSession,(err,reply)=>{
+	if(reply){
+	    redisClient.expire(reqSession,60*60*24*3)
+	    res.end()
+	}else{
+	    retSession();
+	}
+    })
+    
+    //helper
+}
+
+
+
+module.exports = checkSession;
+

@@ -1,0 +1,21 @@
+'use strict'
+//　aqnuroad-server;
+
+global.API  = __dirname+'/api';
+global.DATA = __dirname+'/data/';
+global.api = {}
+
+
+
+//node_module
+let fs = require('fs');
+let app = require('express')();
+let https = require('https');
+let privateKey = fs.readFileSync('','');
+let certificate = fs.readFileSync('','');
+let httpsServer = https.createServer(credentials, app);
+console.log('server running at 8888')
+let routes = require(DATA+'routes');
+
+
+routes(app);

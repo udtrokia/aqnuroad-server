@@ -1,0 +1,67 @@
+/*
+*
+*
+*response lists
+*
+*/
+'use strict'
+
+
+//node_modules
+
+
+let MongoClient = require('mongodb').MongoClient;
+let dbApi = require('../../api/db');
+
+
+
+
+//main
+let Export = (req, res)=>{
+    //set data
+//    var DB_CONN_STR = 'mongodb://localhost:27017/aqnuroad';//your db str ##<localhost:27017>
+//    let dbName     = 'aqnuroad';// dbName ## <postData>
+//    let collection = 'postData'; //which collection  ##<posts>
+//    let page       = 1;//post page
+    let page = req.page;
+    let dbName = 'aqnuroad';
+    let whereStr = {};
+    let collection = 'postData';
+    let DB_CONN_STR = 'mongodb://localhost:27017/aqnuroad';
+    
+    //connect
+    MongoClient.connect(DB_CONN_STR, (err, db)=>{
+	console.log('success')
+        db = db.db(dbName);
+	req.query.refresh?db_refresh(db):db_load(db);
+//	re_fresh(db,(result)=>{
+//	    console.log(result)
+//	    db.close();
+//	});
+
+    });
+
+    //helper
+    let db_load　= (db)=>{
+	dbApi.select.loadmore(db, collection, {}, page, (result)=>{
+//	    console.log(result);
+	    res.json(result);
+	})
+    }
+
+    let db_refresh = (db)=>{
+	dbApi.select.refresh(db, collection, {}, page, (result)=>{
+	    res.json(result)
+	})
+    }
+
+
+}
+
+
+
+
+module.exports = Export;
+
+
+

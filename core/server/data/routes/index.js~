@@ -1,0 +1,25 @@
+//I`m router
+
+'use strict'
+
+let Import     = require(DATA+'import');
+let Export     = require(DATA+'export');
+//let checkSession = require(DATA+'session');
+
+let routes=(app)=>{
+
+//    app.use(checkSession);
+    
+    app.get('/import',(req,res)=>{
+	Import(req,res);
+    });
+
+    app.get('/export',(req,res)=>{
+	Export(req,res);
+    });
+
+    
+
+}
+
+module.exports = routes;
