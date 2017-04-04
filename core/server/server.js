@@ -1,9 +1,6 @@
 'use strict'
 //　aqnuroad-server;
 
-global.API  = __dirname+'/api';
-global.DATA = __dirname+'/data/';
-global.api = {}
 
 
 
@@ -11,16 +8,32 @@ global.api = {}
 let fs = require('fs');
 let app = require('express')();
 let https = require('https');
-const privateKey = fs.readFileSync('','');
-const certificate = fs.readFileSync('','');
-const credentials = {
-    key: fs.readFileSync('../../ssl/214061262970155.key'),
-    cert: fs.readFileSync('../../ssl/214061262970155.pem')
-}
+let config = require('config');
 
-const httpsServer = https.createServer(credentials, app);
-console.log('server running at 8888')
+
+//globaldir
+global.API  = __dirname+'/api';
+global.DATA = __dirname+'/data/';
+
+
+global.httpsConfig = config.get('https') 
+global.mongodbConfig = config.get('mongoDb')
+global.wxSession = config.get('wxSession')
+
+
+//main
 let routes = require(DATA+'routes');
 
+const credentials = {
+    key: fs.readFileSync(httpsConfig.key_dir),
+    cert: fs.readFileSync(httpsConfig.cert_dir)
+}
+const httpsServer = https.createServer(credentials, app).listen(443)
+
+console.log('server running at 443')
 
 routes(app);
+
+
+
+

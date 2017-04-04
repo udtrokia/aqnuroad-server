@@ -24,7 +24,7 @@ let dbApi = {
 	    let collection = db.collection(table);
 	    //select
 
-	    collection.find(whereStr).toArray((err,result)=>{
+	    collection.find(whereStr).sort({date:1}).toArray((err,result)=>{
 		if(err){
 		    console.log('Error: '+err);
 		    return;
@@ -39,7 +39,7 @@ let dbApi = {
             let collection = db.collection(table);
             //select
 	    
-            collection.find(whereStr).limit(5*page).toArray((err,result)=>{
+            collection.find(whereStr).sort({date:-1}).limit(5*page).toArray((err,result)=>{
     		if(err){
     		    console.log('Error: '+err);
     		    return;
@@ -53,7 +53,7 @@ let dbApi = {
 	    let collection = db.collection(table);
 	    page += page;
 	    //select
-	    collection.find(whereStr).limit(5).skip(page).toArray((err, result)=>{
+	    collection.find(whereStr).sort({date:-1}).limit(5).skip(page).toArray((err, result)=>{
 		if(err){
 		    console.log('Error:'+err);
 		    return;

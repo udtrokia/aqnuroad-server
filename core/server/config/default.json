@@ -1,0 +1,21 @@
+{
+	"https":{
+
+		"key_dir"	: "/root/aqnuroad/ssl/214061262970155.key", 
+		"cert_dir": "/root/aqnuroad/ssl/214061262970155.pem"
+	},
+	
+	"mongoDb":{
+
+		"dbName" : "aqnuroad",
+		"collection" : "postData",
+		"DB_CONN_STR" : "mongodb://localhost:27017"
+	},
+
+	"wxSession":{
+		
+		"APPID" : "wx3f9ecab6d0b8ea53",
+		"SECRET" : "f26a32a4c9bdebbac4476c33c77392f3"
+	}
+	
+}
