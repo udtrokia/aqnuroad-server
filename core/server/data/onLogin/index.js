@@ -55,29 +55,21 @@ let retSession  = (req,res)=>{
     let APPID   = wxSession.APPID;
     let SECRET  = wxSession.SECRET;
     let JSCODE  = req.query.code;
-	console.log(JSCODE)
-
     https.get("https://api.weixin.qq.com/sns/jscode2session?appid="+APPID+"&secret="+SECRET+"&js_code="+JSCODE+"&grant_type=authorization_code",(wxRes)=>{
 		
 	
-		let session = parseRes(wxRes, (parsedData)=>{
+		parseRes(wxRes, (parsedData)=>{
 	  	    if(parsedData.openid&&parsedData.session_key){
 				let mySession = makeSession();
+				console.log('mySession:'+mySession)
 				redisClient.set(mySession,parsedData.openid+parsedData.session_key);
-	   			console.log('insert success')
-	  			session = {
-				    'SESSID' : mySession,
-	  			}
-	  			return session;
+				res.json(mySession)
 	  	    }else{
 				return('err');
 			}
 		})
 
     })
-
-	res.json(session)
-	
 }
 
 
