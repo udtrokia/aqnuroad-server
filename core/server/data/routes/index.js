@@ -21,7 +21,6 @@ let routes=(app)=>{
 	Export(req,res);
     });
 
-    
 
 }
 
