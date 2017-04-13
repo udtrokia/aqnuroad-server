@@ -24,7 +24,7 @@ let Export = (req, res)=>{
     
     //connect
     MongoClient.connect(DB_CONN_STR, (err, db)=>{
-	console.log('success')
+
         db = db.db(dbName);
 	req.query.refresh?db_refresh(db):db_load(db);
 
