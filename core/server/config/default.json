@@ -1,13 +1,13 @@
 {
 	"https":{
 
-		"key_dir"	: "/root/aqnuroad/ssl/214061262970155.key", 
-		"cert_dir": "/root/aqnuroad/ssl/214061262970155.pem"
+		"key_dir"	: "/root/akpz/ssl/214061262970155.key", 
+		"cert_dir": "/root/akpz/ssl/214061262970155.pem"
 	},
 	
 	"mongoDb":{
 
-		"dbName" : "aqnuroad",
+		"dbName" : "akpz",
 		"collection" : "postData",
 		"DB_CONN_STR" : "mongodb://localhost:27017"
 	},

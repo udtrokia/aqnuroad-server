@@ -14,7 +14,7 @@ let config = require('config');
 //globaldir
 global.API  = __dirname+'/api';
 global.DATA = __dirname+'/data/';
-
+global.LIB  = __dirname+'/lib/';
 
 global.httpsConfig = config.get('https') 
 global.mongodbConfig = config.get('mongoDb')

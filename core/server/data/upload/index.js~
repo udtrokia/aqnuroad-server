@@ -1,0 +1,42 @@
+
+
+/*
+*
+*
+*/
+
+var filePath = '';
+var folder = ''
+
+var  multer=require('multer');
+var storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, LIB+'/avatar/')
+    },
+    filename: function (req, file, cb) {
+	var openId = req.body.openId;
+        cb(null, openId );
+	filePath = 'https://udtrokia.com/lib/'+file.fieldname+'?openId='+openId;
+	folder = file.fieldname;
+    }
+});
+
+//var upload = multer({
+//    storage: storage
+//});
+//
+//var upload=upload.single('avatar');
+//
+module.exports= function (req, res) {
+    multer({storage: storage}).single(folder)
+    upload(req, res, function (err) {
+	if (err) {
+            return  console.log(err);
+	    }
+	res.send(filePath);
+    });
+    
+}
+
+
+

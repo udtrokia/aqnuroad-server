@@ -1,9 +1,0 @@
-
-var a = null;
-
-
-var helo = ()=>{console.log('helo')}
-var word = ()=>{console.log('word')}
-
-
-a?helo():word()
