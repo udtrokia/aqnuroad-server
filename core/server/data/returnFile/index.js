@@ -1,0 +1,21 @@
+
+'use strict'
+
+let fs = require('fs');
+
+let returnFile = (req, res)=>{
+    console.log('comes retrun')
+
+    let libFolder = req.params.libFolder;
+    let fileType = req.query.type
+    let fileName = req.query.openId;
+    let filePath = LIB+libFolder+'/'+fileName;
+    let file = fs.readFileSync(filePath);
+	res.writeHead(200,{'Content-Type':'image/jpeg'})
+	res.end(file,'binary')
+}
+
+
+
+
+module.exports=returnFile;

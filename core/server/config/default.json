@@ -1,15 +1,26 @@
 {
 	"https":{
 
+<<<<<<< HEAD
 		"key_dir"	: "your https_key_dir", 
 		"cert_dir": "your https_cert_dir"
+=======
+		"key_dir"	: "/root/akpz/ssl/214061262970155.key", 
+		"cert_dir": "/root/akpz/ssl/214061262970155.pem"
+>>>>>>> f07896ea4672ed2efc4d490ad93c273aca665b46
 	},
 	
 	"mongoDb":{
 
+<<<<<<< HEAD
 		"dbName" : "your dbName",
 		"collection" : "your db collection",
 		"DB_CONN_STR" : "your db connection str"
+=======
+		"dbName" : "akpz",
+		"collection" : "postData",
+		"DB_CONN_STR" : "mongodb://localhost:27017"
+>>>>>>> f07896ea4672ed2efc4d490ad93c273aca665b46
 	},
 
 	"wxSession":{

@@ -5,26 +5,26 @@
 // insert
 let dbApi = {
 
-    insertData : (db, table, data, callback)=>{
+    insert : (db, table, data, callback)=>{
         //link table
         let collection = db.collection(table);
         //insert
         collection.insert(data, (err, result)=>{
     	if(err){
     	    console.log('Error:'+err);
-    	    return
+    	    return;
     	}
-    	callback(result);
+    	    callback(result);
         });
     },
     select :{
 	// select
-	serlect : (db, table, whereStr, callback)=>{
+	select : (db, table, whereStr, callback)=>{
 	    //link table
 	    let collection = db.collection(table);
 	    //select
-
-	    collection.find(whereStr).sort({date:1}).toArray((err,result)=>{
+//	    whereStr = JSON.parse(whereStr);
+	    collection.find(whereStr).toArray((err,result)=>{
 		if(err){
 		    console.log('Error: '+err);
 		    return;
@@ -38,8 +38,8 @@ let dbApi = {
             //link table
             let collection = db.collection(table);
             //select
-	    
-            collection.find(whereStr).sort({date:-1}).limit(5*page).toArray((err,result)=>{
+//	    whereStr = JSON.parse(whereStr)
+            collection.find(whereStr).sort({date:-1,name:-1}).limit(5*page).toArray((err,result)=>{
     		if(err){
     		    console.log('Error: '+err);
     		    return;
@@ -52,8 +52,9 @@ let dbApi = {
 	    //link table
 	    let collection = db.collection(table);
 	    page += page;
+	    whereStr = JSON.parse(whereStr)
 	    //select
-	    collection.find(whereStr).sort({date:-1}).limit(5).skip(page).toArray((err, result)=>{
+	    collection.find(whereStr).sort({date:-1,name:-1}).limit(5).skip(page).toArray((err, result)=>{
 		if(err){
 		    console.log('Error:'+err);
 		    return;
@@ -65,31 +66,33 @@ let dbApi = {
     },
     // update
     
-    updataData : (db, table, whereStr, updateStr, callback)=>{
+    update : (db, table, whereStr, updateStr, callback)=>{
         //link table
         let collection = db.collection(table);
         //update data
-        collection.update(whereStr, updateStr, (err, result)=>{
-    	if(err){
-    	    console.log('Error:'+err);
-    	    return result;
-    	}
-    	callback(result);
-        });
+	whereStr = JSON.parse(whereStr)
+        collection.update(whereStr, updateStr, {upsert:true},(err, result)=>{
+	    if(err){
+		console.log("UPDATE ERR: "+err);
+		return;
+	    }
+    	    callback(result);		
+	});
     },
     
     // delete
     
-    delData : (db, table, whereStr, callback)=>{
+    del : (db, table, whereStr, callback)=>{
         //link to table
         let collection = db.collection(table);
         //delete
+	whereStr  = JSON.parse(whereStr)
         collection.remove(whereStr, (err,result)=>{
-    	if(err){
-    	    console.log('Error:'+err);
-    	    return;
-    	}
-    	console.log(result);
+    	    if(err){
+    		console.log('Error:'+err);
+    		return;
+    	    }
+    	    callback(result);
         })
     }
 }
