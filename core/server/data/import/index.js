@@ -10,6 +10,8 @@
 
 let MongoClient = require('mongodb').MongoClient;
 let dbApi = require('../../api/db');
+let fuckWords = require(DATA+'/fuckWords')
+let fs = require('fs')
 
 
 //main func
@@ -22,24 +24,44 @@ let Import = (req,res)=>{
     let switchApi  = data.api;
     let collection = data.col;// ##<posts>
     let DB_CONN_STR = mongodbConfig.DB_CONN_STR; // ##<http://localhost:27017>
+    let keyWordsArr = [data.msg,data.name,data.sex,data.age,data.weChat,data.hobby,data.desire,data.word,data.stuff,data.need,data.staff]
+
+
+    for(var i in keyWordsArr){
+	var checkWords = fuckWords(keyWordsArr[i])
+	if(checkWords==true){
+	    console.log('it works!!!!!')
+	    res.end(false)
+	    return
+	}
+
+    }
+
+
+
+
 
     //connect db
     MongoClient.connect(DB_CONN_STR, (err,db)=>{
 
-	console.log(req.query)
 	db = db.db(dbName);
 	switch(switchApi){
 	case "insert":
 	    db_insert(db);
 	    break;
 	case "update":
-	    db_update(db);
+	    if(data.weChat){
+		db_update(db);
+	    }else{
+		db_del(db)
+	    }
 	    break;
 	case "del":
 	    db_del(db);
 	}
 
 	db.close();
+	res.end('success')
     })
 
     let db_insert =(db)=>{
@@ -51,8 +73,11 @@ let Import = (req,res)=>{
     }
 
     let db_del = (db)=>{
-	db.Api.del(db, collection, whereStr, (result)=>{})
+	dbApi.del(db, collection, whereStr, (result)=>{
+	})
     }
+
+
 }
 
 

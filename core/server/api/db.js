@@ -12,9 +12,9 @@ let dbApi = {
         collection.insert(data, (err, result)=>{
     	if(err){
     	    console.log('Error:'+err);
-    	    return
+    	    return;
     	}
-    	callback(result);
+    	    callback(result);
         });
     },
     select :{
@@ -23,8 +23,8 @@ let dbApi = {
 	    //link table
 	    let collection = db.collection(table);
 	    //select
-
-	    collection.find({}).toArray((err,result)=>{
+//	    whereStr = JSON.parse(whereStr);
+	    collection.find(whereStr).toArray((err,result)=>{
 		if(err){
 		    console.log('Error: '+err);
 		    return;
@@ -38,7 +38,7 @@ let dbApi = {
             //link table
             let collection = db.collection(table);
             //select
-	    
+//	    whereStr = JSON.parse(whereStr)
             collection.find(whereStr).sort({date:-1,name:-1}).limit(5*page).toArray((err,result)=>{
     		if(err){
     		    console.log('Error: '+err);
@@ -52,6 +52,7 @@ let dbApi = {
 	    //link table
 	    let collection = db.collection(table);
 	    page += page;
+	    whereStr = JSON.parse(whereStr)
 	    //select
 	    collection.find(whereStr).sort({date:-1,name:-1}).limit(5).skip(page).toArray((err, result)=>{
 		if(err){
@@ -73,6 +74,7 @@ let dbApi = {
         collection.update(whereStr, updateStr, {upsert:true},(err, result)=>{
 	    if(err){
 		console.log("UPDATE ERR: "+err);
+		return;
 	    }
     	    callback(result);		
 	});
@@ -84,12 +86,13 @@ let dbApi = {
         //link to table
         let collection = db.collection(table);
         //delete
+	whereStr  = JSON.parse(whereStr)
         collection.remove(whereStr, (err,result)=>{
-    	if(err){
-    	    console.log('Error:'+err);
-    	    return;
-    	}
-    	console.log(result);
+    	    if(err){
+    		console.log('Error:'+err);
+    		return;
+    	    }
+    	    callback(result);
         })
     }
 }

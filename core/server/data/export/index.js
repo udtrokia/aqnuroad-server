@@ -59,6 +59,7 @@ let Export = (req, res)=>{
     let db_select = (db)=>{
 	whereStr = JSON.parse(whereStr)
 	dbApi.select.select(db, collection, whereStr, (result)=>{
+	    console.log(result)
 	    res.json(result)
 	})
     }
