@@ -24,7 +24,7 @@ let Import = (req,res)=>{
     let switchApi  = data.api;
     let collection = data.col;// ##<posts>
     let DB_CONN_STR = mongodbConfig.DB_CONN_STR; // ##<http://localhost:27017>
-    let keyWordsArr = [data.msg,data.name,data.sex,data.age,data.weChat,data.hobby,data.desire,data.word,data.stuff,data.need,data.staff]
+    let keyWordsArr = [data.msg,data.name,data.sex,data.age,data.weChat,data.hobby,data.desire,data.word,data.stuff,data.require,data.staff]
 
 
     for(var i in keyWordsArr){
